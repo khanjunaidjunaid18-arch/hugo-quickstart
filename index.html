@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step Up | Premium Footwear Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        @keyframes zoom {
+            from { transform: scale(1.05); }
+            to { transform: scale(1.15); }
+        }
+
+        .hero-zoom {
+            animation: zoom 20s infinite alternate;
+        }
+
+        .animate-spin-slow {
+            animation: spin 8s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .fade-in-section {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-white text-zinc-900 selection:bg-orange-600 selection:text-white">
+
+    <!-- App Container (Logic managed via Alpine-like state or simple JS) -->
+    <div id="app">
+        <!-- Top Banner -->
+        <div class="bg-zinc-900 text-white text-[10px] py-2 text-center uppercase tracking-[0.3em] font-bold overflow-hidden">
+            <div class="animate-pulse">
+                Free Shipping in Pakistan (Karachi, Lahore, Islamabad) • Worldwide Delivery Available
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-zinc-100 px-6 py-4">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-2 cursor-pointer group" onclick="showSection('home')">
+                    <div class="bg-zinc-900 text-white px-2 py-1 font-black italic text-xl transition-transform group-hover:scale-105">STEP UP</div>
+                </div>
+                
+                <div class="hidden lg:flex gap-8 text-[11px] font-bold uppercase tracking-widest">
+                    <button onclick="showSection('home')" class="nav-link hover:text-orange-600 transition-all">Home</button>
+                    <button onclick="showSection('shop')" class="nav-link hover:text-orange-600 transition-all">Shop</button>
+                    <button onclick="showSection('track')" class="nav-link hover:text-orange-600 transition-all">Track Order</button>
+                    <button onclick="showSection('size')" class="nav-link hover:text-orange-600 transition-all">Size Guide</button>
+                    <button onclick="showSection('about')" class="nav-link hover:text-orange-600 transition-all">About Us</button>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="openShareModal()" class="p-2 text-zinc-400 hover:text-orange-600 transition-colors hidden sm:block">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    </button>
+                    <button onclick="showSection('cart')" class="relative p-2 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:text-orange-600 transition-colors"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                        <span id="cart-count" class="hidden absolute -top-1 -right-1 bg-orange-600 text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold animate-bounce">0</span>
+                    </button>
+                    <button class="lg:hidden p-2" onclick="toggleMobileMenu()">
+                        <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-white border-b border-zinc-100 p-6 flex flex-col gap-6 shadow-xl text-center">
+                <button onclick="showSection('home')" class="font-black uppercase tracking-widest text-sm">Home</button>
+                <button onclick="showSection('shop')" class="font-black uppercase tracking-widest text-sm">Shop</button>
+                <button onclick="showSection('track')" class="font-black uppercase tracking-widest text-sm">Track Order</button>
+                <button onclick="showSection('size')" class="font-black uppercase tracking-widest text-sm">Size Guide</button>
+                <button onclick="showSection('about')" class="font-black uppercase tracking-widest text-sm">About Us</button>
+                <button onclick="openShareModal()" class="font-black uppercase tracking-widest text-sm text-orange-600">Share Store</button>
+            </div>
+        </nav>
+
+        <!-- Sections -->
+        <main>
+            <!-- Home Section -->
+            <section id="section-home" class="section">
+                <div class="relative h-[85vh] flex items-center justify-center overflow-hidden bg-zinc-900">
+                    <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=1600" class="absolute inset-0 w-full h-full object-cover opacity-60 hero-zoom" alt="Banner" />
+                    <div class="relative text-center z-10 px-6 max-w-4xl">
+                        <h1 class="text-6xl md:text-9xl font-black uppercase tracking-tighter text-white mb-6 leading-[0.85] animate__animated animate__fadeInUp">Step Into <br/> Style</h1>
+                        <p class="text-[12px] md:text-[14px] font-bold uppercase tracking-[0.5em] text-white/80 mb-10 animate__animated animate__fadeInUp">Premium Footwear Crafted for Pakistan & Beyond</p>
+                        <button onclick="showSection('shop')" class="group relative overflow-hidden bg-white text-zinc-900 px-12 py-5 font-black uppercase text-[10px] tracking-widest hover:text-white transition-colors duration-500 animate__animated animate__fadeInUp">
+                            <span class="relative z-10">Shop Collection</span>
+                            <div class="absolute inset-0 bg-orange-600 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="max-w-7xl mx-auto py-32 px-6 grid md:grid-cols-3 gap-16 text-center">
+                    <div class="space-y-6">
+                        <div class="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mx-auto"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-900"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+                        <h3 class="font-black uppercase text-sm tracking-widest">Global Logistics</h3>
+                        <p class="text-zinc-500 text-xs leading-loose">Fast delivery across Pakistan and reliable international shipping with tracked carriers.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mx-auto"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-900"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
+                        <h3 class="font-black uppercase text-sm tracking-widest">Easy Returns</h3>
+                        <p class="text-zinc-500 text-xs leading-loose">7-day return and exchange policy to ensure you always have the perfect fit.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mx-auto"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-900"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                        <h3 class="font-black uppercase text-sm tracking-widest">Authentic Quality</h3>
+                        <p class="text-zinc-500 text-xs leading-loose">Every pair is inspected at the Step Up Studio to guarantee premium standards.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shop Section -->
+            <section id="section-shop" class="section hidden">
+                <div class="max-w-7xl mx-auto py-16 px-6">
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
+                        <h2 class="text-4xl font-black uppercase tracking-tighter">Collections</h2>
+                        <div class="flex gap-4 overflow-x-auto pb-2 w-full md:w-auto no-scrollbar" id="category-filters">
+                            <button onclick="filterProducts('All')" class="cat-btn bg-zinc-900 text-white px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest">All</button>
+                            <button onclick="filterProducts('Formal')" class="cat-btn bg-zinc-100 text-zinc-400 px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest">Formal</button>
+                            <button onclick="filterProducts('Sport')" class="cat-btn bg-zinc-100 text-zinc-400 px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest">Sport</button>
+                            <button onclick="filterProducts('Casual')" class="cat-btn bg-zinc-100 text-zinc-400 px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest">Casual</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" id="product-grid">
+                        <!-- Products injected by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Track Order Section -->
+            <section id="section-track" class="section hidden">
+                <div class="max-w-2xl mx-auto py-24 px-6">
+                    <h2 class="text-5xl font-black uppercase tracking-tighter mb-4 text-center">Track Order</h2>
+                    <p class="text-center text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-12">Enter your Order ID to see real-time status</p>
+                    <div class="bg-zinc-50 p-10 rounded-3xl border border-zinc-100 shadow-sm">
+                        <div class="flex gap-4 mb-8">
+                            <input id="tracking-input" placeholder="Order ID (e.g. ST-8821)" class="flex-1 p-5 bg-white border border-zinc-200 rounded-2xl text-xs uppercase font-bold tracking-widest focus:ring-2 ring-orange-600 outline-none transition-all" />
+                            <button onclick="handleTracking()" class="bg-zinc-900 text-white px-8 rounded-2xl hover:bg-orange-600 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+                        </div>
+                        <div id="tracking-result" class="hidden space-y-6">
+                            <div class="flex items-center justify-between p-6 bg-orange-600 text-white rounded-2xl">
+                                <div>
+                                    <p class="text-[8px] font-bold uppercase tracking-widest opacity-80 mb-1">Current Status</p>
+                                    <p class="font-black uppercase text-xl">In Transit</p>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-bounce"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="p-5 bg-white border border-zinc-100 rounded-2xl">
+                                    <p class="text-[8px] font-bold uppercase tracking-widest text-zinc-400 mb-2">Location</p>
+                                    <p class="font-black text-xs uppercase">Hub - Karachi</p>
+                                </div>
+                                <div class="p-5 bg-white border border-zinc-100 rounded-2xl">
+                                    <p class="text-[8px] font-bold uppercase tracking-widest text-zinc-400 mb-2">Expected Arrival</p>
+                                    <p class="font-black text-xs uppercase text-orange-600">Next 24-48 Hours</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Size Guide Section -->
+            <section id="section-size" class="section hidden">
+                <div class="max-w-4xl mx-auto py-24 px-6">
+                    <h2 class="text-5xl font-black uppercase tracking-tighter mb-4 text-center">Size Guide</h2>
+                    <div class="overflow-hidden border border-zinc-100 rounded-3xl shadow-2xl mt-12">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="bg-zinc-900 text-white font-black uppercase text-[10px] tracking-widest">
+                                    <th class="p-6">EU Size</th>
+                                    <th class="p-6">UK Size</th>
+                                    <th class="p-6">US Size</th>
+                                    <th class="p-6">Length (CM)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="size-table-body" class="divide-y divide-zinc-100">
+                                <!-- Size data injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="section-about" class="section hidden">
+                <div class="max-w-4xl mx-auto py-24 px-6">
+                    <h2 class="text-5xl font-black uppercase tracking-tighter mb-12 text-center">About Us</h2>
+                    <div class="aspect-video bg-zinc-100 mb-16 overflow-hidden rounded-3xl relative">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover" alt="Workshop" />
+                    </div>
+                    <div class="space-y-8">
+                        <h3 class="text-3xl font-black uppercase text-zinc-900 tracking-tight flex items-center gap-3">
+                            <div class="w-8 h-[2px] bg-orange-600"></div> Studio Philosophy
+                        </h3>
+                        <p class="text-zinc-600 leading-loose">Bringing international shoe standards to Pakistan, Step Up creates footwear that balances modern aesthetics with traditional comfort. Based in Karachi, we deliver to fashion-conscious individuals across the country and the globe.</p>
+                        <p class="text-zinc-600 leading-loose">Every shoe is designed in our studio, focusing on premium materials, ergonomic design, and impeccable style. We believe that a good pair of shoes is the foundation of confidence.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cart Section -->
+            <section id="section-cart" class="section hidden">
+                <div class="max-w-7xl mx-auto py-24 px-6">
+                    <div id="order-success" class="hidden text-center py-24 bg-zinc-50 rounded-3xl">
+                        <div class="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <h2 class="text-4xl font-black uppercase mb-4">Order Received</h2>
+                        <p class="text-zinc-500 uppercase tracking-widest text-xs mb-10">Our team will contact you shortly to confirm your order.</p>
+                        <button onclick="showSection('shop')" class="bg-zinc-900 text-white px-10 py-5 font-black uppercase text-[10px]">Continue Shopping</button>
+                    </div>
+
+                    <div id="cart-content" class="grid lg:grid-cols-3 gap-16">
+                        <div class="lg:col-span-2 space-y-12">
+                            <h2 class="text-5xl font-black uppercase tracking-tighter mb-10">Shopping Bag</h2>
+                            <div id="cart-items" class="space-y-10">
+                                <!-- Cart items injected -->
+                            </div>
+                        </div>
+                        <div id="cart-summary" class="hidden lg:sticky lg:top-32 h-fit">
+                            <div class="bg-zinc-900 text-white p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+                                <h3 class="font-black uppercase tracking-widest text-sm mb-10 pb-6 border-b border-white/10 text-center">Checkout Total</h3>
+                                <div class="space-y-5 mb-12 text-[11px] font-bold uppercase tracking-widest">
+                                    <div class="flex justify-between text-white/60"><span>Subtotal</span><span id="summary-subtotal">Rs. 0</span></div>
+                                    <div class="flex justify-between text-white/60"><span>Shipping</span><span id="summary-shipping">FREE</span></div>
+                                    <div class="pt-6 flex justify-between text-2xl font-black tracking-tighter text-white"><span>Total</span><span id="summary-total">Rs. 0</span></div>
+                                </div>
+                                
+                                <div class="space-y-3 mb-12">
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Select Payment</p>
+                                    <button onclick="setPayment('cod')" class="pay-btn w-full p-5 rounded-2xl border-2 border-orange-600 bg-orange-600 text-white flex items-center justify-between font-black text-[9px] uppercase tracking-widest" id="btn-cod">Cash on Delivery</button>
+                                    <button onclick="setPayment('jazzcash')" class="pay-btn w-full p-5 rounded-2xl border-2 border-white/10 text-white/50 flex items-center justify-between font-black text-[9px] uppercase tracking-widest" id="btn-jazz">JazzCash</button>
+                                    <div id="jazz-info" class="hidden p-5 bg-white text-zinc-900 rounded-2xl text-center">
+                                        <p class="text-[8px] text-zinc-400 uppercase tracking-widest mb-1">Account Number:</p>
+                                        <p class="text-orange-600 font-black text-sm">03049972526</p>
+                                    </div>
+                                </div>
+
+                                <button onclick="completeOrder()" class="w-full bg-white text-zinc-900 py-6 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-orange-600 hover:text-white transition-all">Complete Purchase</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-zinc-50 py-32 px-6 border-t border-zinc-100">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-20 text-center md:text-left">
+                <div>
+                    <div class="bg-zinc-900 text-white px-4 py-2 font-black italic text-2xl inline-block mb-8">STEP UP</div>
+                    <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest leading-loose">Premium footwear studio delivering excellence nationwide.</p>
+                </div>
+                <div>
+                    <h4 class="font-black uppercase text-xs tracking-widest mb-10">Support</h4>
+                    <div class="flex flex-col gap-5 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                        <button onclick="showSection('home')" class="hover:text-orange-600 text-left">Home</button>
+                        <button onclick="showSection('about')" class="hover:text-orange-600 text-left">About</button>
+                        <button onclick="showSection('track')" class="hover:text-orange-600 text-left">Track Order</button>
+                        <button onclick="showSection('size')" class="hover:text-orange-600 text-left">Size Guide</button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-black uppercase text-xs tracking-widest mb-10">Reach Us</h4>
+                    <div class="flex flex-col gap-6 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                        <p>📞 0304-9972526</p>
+                        <p>📍 Karachi, Pakistan</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-black uppercase text-xs tracking-widest mb-10">Share Store</h4>
+                    <button onclick="openShareModal()" class="flex items-center gap-3 p-4 bg-white border border-zinc-200 rounded-2xl hover:border-orange-600 hover:text-orange-600 transition-all text-[10px] font-black uppercase tracking-widest">
+                        Copy Website Link
+                    </button>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Share Modal -->
+        <div id="share-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6 bg-zinc-900/80 backdrop-blur-sm">
+            <div class="bg-white rounded-3xl p-10 max-w-md w-full shadow-2xl relative">
+                <button onclick="closeShareModal()" class="absolute top-6 right-6 text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <div class="text-center">
+                    <h3 class="text-2xl font-black uppercase mb-4">Go Live</h3>
+                    <p class="text-zinc-500 text-xs mb-8">To share this store, host this HTML file on Netlify or GitHub Pages to get a permanent link.</p>
+                    <button onclick="copyToClipboard()" class="w-full bg-zinc-900 text-white py-4 rounded-xl font-black uppercase text-[10px] tracking-widest">Copy Code</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripting -->
+    <script>
+        // State
+        let cart = [];
+        let activeView = 'home';
+        let products = [
+            { id: 1, name: "City Walker Pro", price: 4500, category: "Sport", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=600" },
+            { id: 4, name: "Active Run Red", price: 5900, category: "Sport", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=600" },
+            { id: 7, name: "Velocity Mesh X", price: 6200, category: "Sport", img: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&q=80&w=600" },
+            { id: 2, name: "Royal Executive Brown", price: 8500, category: "Formal", img: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&q=80&w=600" },
+            { id: 5, name: "Classic Loafer Noir", price: 7200, category: "Formal", img: "https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&q=80&w=600" },
+            { id: 8, name: "Oxford Heritage", price: 9800, category: "Formal", img: "https://images.unsplash.com/photo-1449505278894-297fdb3edbc1?auto=format&fit=crop&q=80&w=600" },
+            { id: 3, name: "Street Flex Grey", price: 3200, category: "Casual", img: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&q=80&w=600" },
+            { id: 6, name: "Weekend Slide", price: 1800, category: "Casual", img: "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?auto=format&fit=crop&q=80&w=600" },
+            { id: 9, name: "Canvas High-Top", price: 4100, category: "Casual", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=600" },
+        ];
+
+        const sizeChart = [
+            { eu: 39, uk: 5.5, us: 6, cm: 24.5 },
+            { eu: 40, uk: 6.5, us: 7, cm: 25.0 },
+            { eu: 41, uk: 7.5, us: 8, cm: 26.0 },
+            { eu: 42, uk: 8, us: 8.5, cm: 26.5 },
+            { eu: 43, uk: 9, us: 9.5, cm: 27.5 },
+            { eu: 44, uk: 10, us: 10.5, cm: 28.0 },
+            { eu: 45, uk: 11, us: 11.5, cm: 29.0 },
+        ];
+
+        // Core Functions
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`section-${id}`).classList.remove('hidden');
+            window.scrollTo(0,0);
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function filterProducts(cat) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-zinc-900', 'text-white');
+                btn.classList.add('bg-zinc-100', 'text-zinc-400');
+            });
+            event.target.classList.add('bg-zinc-900', 'text-white');
+
+            const filtered = cat === 'All' ? products : products.filter(p => p.category === cat);
+            filtered.forEach(p => {
+                grid.innerHTML += `
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[4/5] bg-zinc-100 overflow-hidden mb-6 relative">
+                            <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="absolute bottom-6 left-6 right-6 opacity-0 group-hover:opacity-100 translate-y-8 group-hover:translate-y-0 transition-all duration-500">
+                                <button onclick="addToCart(${p.id})" class="w-full bg-white py-4 font-black uppercase text-[10px] tracking-widest hover:bg-orange-600 hover:text-white transition-colors">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-black uppercase tracking-tight text-lg">${p.name}</h4>
+                                <p class="text-zinc-400 text-[10px] font-bold uppercase tracking-widest">${p.category}</p>
+                            </div>
+                            <p class="font-black text-orange-600">Rs. ${p.price.toLocaleString()}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const exists = cart.find(item => item.id === id);
+            if (exists) {
+                exists.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const count = document.getElementById('cart-count');
+            const itemsContainer = document.getElementById('cart-items');
+            const content = document.getElementById('cart-content');
+            const summary = document.getElementById('cart-summary');
+            
+            const totalItems = cart.reduce((acc, i) => acc + i.quantity, 0);
+            if (totalItems > 0) {
+                count.classList.remove('hidden');
+                count.innerText = totalItems;
+                summary.classList.remove('hidden');
+            } else {
+                count.classList.add('hidden');
+                summary.classList.add('hidden');
+            }
+
+            itemsContainer.innerHTML = '';
+            let subtotal = 0;
+            
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = `<div class="py-24 text-center border-2 border-dashed border-zinc-100 rounded-3xl bg-zinc-50">Your bag is empty</div>`;
+            }
+
+            cart.forEach(item => {
+                subtotal += item.price * item.quantity;
+                itemsContainer.innerHTML += `
+                    <div class="flex flex-col sm:flex-row gap-8 border-b border-zinc-100 pb-10 items-center">
+                        <div class="w-40 h-40 bg-zinc-100 rounded-2xl overflow-hidden shrink-0">
+                            <img src="${item.img}" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="flex-1 text-center sm:text-left">
+                            <h4 class="font-black uppercase text-xl mb-1">${item.name}</h4>
+                            <div class="flex items-center justify-center sm:justify-start gap-6 mt-4">
+                                <div class="flex items-center gap-4 bg-zinc-100 p-2 rounded-xl">
+                                    <button onclick="changeQty(${item.id}, -1)" class="w-8 h-8 bg-white rounded-lg shadow-sm">-</button>
+                                    <span class="font-black">${item.quantity}</span>
+                                    <button onclick="changeQty(${item.id}, 1)" class="w-8 h-8 bg-white rounded-lg shadow-sm">+</button>
+                                </div>
+                                <p class="font-black text-lg">Rs. ${(item.price * item.quantity).toLocaleString()}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('summary-subtotal').innerText = 'Rs. ' + subtotal.toLocaleString();
+            document.getElementById('summary-total').innerText = 'Rs. ' + subtotal.toLocaleString();
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            }
+            updateCartUI();
+        }
+
+        function handleTracking() {
+            const val = document.getElementById('tracking-input').value;
+            if (!val) return;
+            document.getElementById('tracking-result').classList.remove('hidden');
+        }
+
+        function setPayment(method) {
+            document.querySelectorAll('.pay-btn').forEach(b => {
+                b.classList.remove('border-orange-600', 'bg-orange-600', 'text-white');
+                b.classList.add('border-white/10', 'text-white/50');
+            });
+            const active = method === 'cod' ? 'btn-cod' : (method === 'jazzcash' ? 'btn-jazz' : '');
+            document.getElementById(active).classList.add('border-orange-600', 'bg-orange-600', 'text-white');
+            document.getElementById('jazz-info').classList.toggle('hidden', method !== 'jazzcash');
+        }
+
+        function completeOrder() {
+            document.getElementById('cart-content').classList.add('hidden');
+            document.getElementById('order-success').classList.remove('hidden');
+            cart = [];
+            updateCartUI();
+        }
+
+        function openShareModal() { document.getElementById('share-modal').classList.remove('hidden'); }
+        function closeShareModal() { document.getElementById('share-modal').classList.add('hidden'); }
+        function copyToClipboard() {
+             document.execCommand('copy');
+             closeShareModal();
+        }
+
+        // Init
+        window.onload = () => {
+            filterProducts('All');
+            const sizeBody = document.getElementById('size-table-body');
+            sizeChart.forEach(s => {
+                sizeBody.innerHTML += `
+                    <tr class="hover:bg-zinc-50 transition-colors font-bold text-xs uppercase tracking-widest text-zinc-600">
+                        <td class="p-6 font-black text-zinc-900">EU ${s.eu}</td>
+                        <td class="p-6">UK ${s.uk}</td>
+                        <td class="p-6">US ${s.us}</td>
+                        <td class="p-6 text-orange-600 font-black">${s.cm} cm</td>
+                    </tr>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
